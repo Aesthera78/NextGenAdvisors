@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Globe, Award, Users, BookOpen } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface StatData {
   value: string;
   label: string;
+  icon: React.ReactNode;
 }
 
 interface FloatingCard {
@@ -15,6 +17,7 @@ interface FloatingCard {
   text: string;
   title: string;
   value: string;
+  icon: React.ReactNode;
 }
 
 export default function HeroSection(): JSX.Element {
@@ -23,8 +26,6 @@ export default function HeroSection(): JSX.Element {
   const floatingCardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const textElementsRef = useRef<(HTMLElement | null)[]>([]);
   const buttonsRef = useRef<HTMLDivElement>(null);
-  const [showConsultationModal, setShowConsultationModal] = useState(false);
-  const [showJourneyModal, setShowJourneyModal] = useState(false);
 
   const addToRefs = useCallback(
     (
@@ -44,16 +45,6 @@ export default function HeroSection(): JSX.Element {
       },
     []
   );
-
-  const handleConsultationSubmit = useCallback((): void => {
-    alert("Consultation booked! We will contact you soon.");
-    setShowConsultationModal(false);
-  }, []);
-
-  const handleJourneyStart = useCallback((): void => {
-    setShowJourneyModal(false);
-    setShowConsultationModal(true);
-  }, []);
 
   useEffect(() => {
     const animateElements = (): void => {
@@ -120,363 +111,189 @@ export default function HeroSection(): JSX.Element {
     animateElements();
   }, []);
 
-  const ConsultationModal = useCallback(
-    (): JSX.Element => (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4 transform transition-all">
-          <h3 className="text-xl font-bold text-[#2C3C81] mb-4">
-            Book Free Consultation
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="full-name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Full Name
-              </label>
-              <input
-                id="full-name"
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C73D43]"
-                placeholder="Enter your full name"
-                aria-label="Full Name"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C73D43]"
-                placeholder="Enter your email"
-                aria-label="Email"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Phone
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C73D43]"
-                placeholder="Enter your phone number"
-                aria-label="Phone Number"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Preferred Country
-              </label>
-              <select
-                id="country"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#C73D43]"
-                aria-label="Preferred Country"
-              >
-                <option value="">Select Country</option>
-                <option value="usa">USA</option>
-                <option value="canada">Canada</option>
-                <option value="uk">UK</option>
-                <option value="australia">Australia</option>
-                <option value="germany">Germany</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={() => setShowConsultationModal(false)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
-              type="button"
-              aria-label="Cancel consultation booking"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleConsultationSubmit}
-              className="flex-1 px-4 py-2 bg-[#C73D43] text-white rounded-md hover:bg-[#2C3C81] transition-colors"
-              type="button"
-              aria-label="Confirm consultation booking"
-            >
-              Book Now
-            </button>
-          </div>
-        </div>
-      </div>
-    ),
-    [handleConsultationSubmit]
-  );
-
-  const JourneyModal = useCallback(
-    (): JSX.Element => (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl p-6 max-w-lg w-full mx-4 transform transition-all">
-          <h3 className="text-xl font-bold text-[#2C3C81] mb-4">
-            Start Your Education Journey
-          </h3>
-          <div className="space-y-4">
-            <p className="text-gray-600">
-              Choose your path to global education excellence:
-            </p>
-            <div className="grid grid-cols-1 gap-3">
-              <button
-                className="p-4 border rounded-lg hover:border-[#C73D43] hover:bg-red-50 transition-all text-left"
-                type="button"
-                aria-label="Undergraduate Programs"
-              >
-                <div className="font-semibold text-[#2C3C81]">
-                  🎓 Undergraduate Programs
-                </div>
-                <div className="text-sm text-gray-600">
-                  Bachelor&apos;s degree programs worldwide
-                </div>
-              </button>
-              <button
-                className="p-4 border rounded-lg hover:border-[#C73D43] hover:bg-red-50 transition-all text-left"
-                type="button"
-                aria-label="Graduate Programs"
-              >
-                <div className="font-semibold text-[#2C3C81]">
-                  📚 Graduate Programs
-                </div>
-                <div className="text-sm text-gray-600">
-                  Master&apos;s and PhD programs
-                </div>
-              </button>
-              <button
-                className="p-4 border rounded-lg hover:border-[#C73D43] hover:bg-red-50 transition-all text-left"
-                type="button"
-                aria-label="Test Preparation"
-              >
-                <div className="font-semibold text-[#2C3C81]">
-                  📝 Test Preparation
-                </div>
-                <div className="text-sm text-gray-600">
-                  IELTS, TOEFL, GRE, GMAT prep
-                </div>
-              </button>
-              <button
-                className="p-4 border rounded-lg hover:border-[#C73D43] hover:bg-red-50 transition-all text-left"
-                type="button"
-                aria-label="Scholarship Guidance"
-              >
-                <div className="font-semibold text-[#2C3C81]">
-                  💰 Scholarship Guidance
-                </div>
-                <div className="text-sm text-gray-600">
-                  Find and apply for scholarships
-                </div>
-              </button>
-            </div>
-          </div>
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={() => setShowJourneyModal(false)}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
-              type="button"
-              aria-label="Close journey modal"
-            >
-              Close
-            </button>
-            <button
-              onClick={handleJourneyStart}
-              className="flex-1 px-4 py-2 bg-[#C73D43] text-white rounded-md hover:bg-[#2C3C81] transition-colors"
-              type="button"
-              aria-label="Get started with education journey"
-            >
-              Get Started
-            </button>
-          </div>
-        </div>
-      </div>
-    ),
-    [handleJourneyStart]
-  );
-
   const statsData: StatData[] = [
-    { value: "98%", label: "Success Rate" },
-    { value: "50+", label: "Universities" },
-    { value: "15+", label: "Countries" },
+    { 
+      value: "5000+", 
+      label: "Students Guided",
+      icon: <Users className="w-5 h-5" />
+    },
+    { 
+      value: "100+", 
+      label: "Universities",
+      icon: <BookOpen className="w-5 h-5" />
+    },
+    { 
+      value: "5+", 
+      label: "Countries",
+      icon: <Globe className="w-5 h-5" />
+    },
   ];
 
   const floatingCardsData: FloatingCard[] = [
     {
       position: "top-4 right-0",
-      bg: "bg-[#2C3C81]",
-      text: "text-[#F5F4F5]",
-      title: "IELTS/TOEFL",
-      value: "Expert Prep",
+      bg: "bg-gradient-to-br from-primary-500 to-primary-600",
+      text: "text-white",
+      title: "Success Rate",
+      value: "98%",
+      icon: <Award className="w-5 h-5" />
     },
     {
       position: "top-1/2 left-0",
-      bg: "bg-[#C73D43]",
-      text: "text-[#F5F4F5]",
-      title: "Scholarships",
-      value: "$2M+ Secured",
+      bg: "bg-gradient-to-br from-secondary-500 to-secondary-600",
+      text: "text-white",
+      title: "Expert Counselors",
+      value: "50+",
+      icon: <Users className="w-5 h-5" />
     },
     {
       position: "bottom-1/3 right-0",
-      bg: "bg-[#B2ACCE]",
-      text: "text-[#2C3C81]",
-      title: "Visa Success",
-      value: "98% Rate",
+      bg: "bg-gradient-to-br from-supporting-500 to-supporting-600",
+      text: "text-white",
+      title: "Years Experience",
+      value: "15+",
+      icon: <BookOpen className="w-5 h-5" />
     },
     {
       position: "bottom-4 left-0",
-      bg: "bg-[#2C3C81]",
-      text: "text-[#F5F4F5]",
+      bg: "bg-gradient-to-br from-primary-500 to-secondary-500",
+      text: "text-white",
       title: "Since",
       value: "2010",
+      icon: <Globe className="w-5 h-5" />
     },
   ];
 
   return (
-    <>
-      <div
-        ref={heroRef}
-        className="bg-[#F5F4F5] min-h-screen lg:pt-50 pt-24 pb-8 md:pb-16 overflow-hidden"
-      >
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-6 md:space-y-8">
-              <div className="space-y-4 md:space-y-6">
-                <div
-                  ref={addToRefs(textElementsRef, 0)}
-                  className="inline-block bg-[#B2ACCE]/30 text-[#2C3C81] px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium"
-                >
-                  Trusted by 10,000+ Students Worldwide
-                </div>
-
-                <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
-                  <span
-                    ref={addToRefs(textElementsRef, 1)}
-                    className="text-[#2C3C81] block"
-                  >
-                    Your Gateway to{" "}
-                  </span>
-                  <span
-                    ref={addToRefs(textElementsRef, 2)}
-                    className="text-[#C73D43] block"
-                  >
-                    Global
-                  </span>
-                  <span
-                    ref={addToRefs(textElementsRef, 3)}
-                    className="text-[#C73D43] block"
-                  >
-                    Education{" "}
-                  </span>
-                  <span
-                    ref={addToRefs(textElementsRef, 4)}
-                    className="text-[#2C3C81] block"
-                  >
-                    Excellence
-                  </span>
-                </h1>
-
-                <p
-                  ref={addToRefs(textElementsRef, 5)}
-                  className="text-[#2C3C81]/80 text-base md:text-lg max-w-lg leading-relaxed"
-                >
-                  At Gurukul Education Foundation, we transform dreams into
-                  reality. Expert guidance, comprehensive test prep, and
-                  personalized support for your international education journey.
-                </p>
+    <div
+      ref={heroRef}
+      className="bg-gradient-to-br from-accent-500 via-white to-accent-300 min-h-screen lg:pt-50 pt-24 pb-8 md:pb-16 overflow-hidden"
+    >
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-6 md:space-y-8">
+            <div className="space-y-4 md:space-y-6">
+              <div
+                ref={addToRefs(textElementsRef, 0)}
+                className="inline-block bg-primary-100 text-primary-700 px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium"
+              >
+                🌟 Trusted by 5000+ Students Worldwide
               </div>
 
-              <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => setShowJourneyModal(true)}
-                  className="group flex items-center justify-center space-x-2 bg-[#C73D43] text-[#F5F4F5] px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-[#2C3C81] hover:shadow-lg transition-all duration-300 shadow-md"
-                  type="button"
-                  aria-label="Start your education journey"
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+                <span
+                  ref={addToRefs(textElementsRef, 1)}
+                  className="text-secondary-500 block"
                 >
-                  <span>START YOUR JOURNEY</span>
-                  <ArrowRight className="w-4 md:w-5 h-4 md:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <button
-                  onClick={() => setShowConsultationModal(true)}
-                  className="group flex items-center justify-center space-x-2 bg-transparent border-2 border-[#2C3C81] text-[#2C3C81] px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-[#2C3C81] hover:text-[#F5F4F5] hover:shadow-lg transition-all duration-300"
-                  type="button"
-                  aria-label="Book free consultation"
+                  Your Gateway to{" "}
+                </span>
+                <span
+                  ref={addToRefs(textElementsRef, 2)}
+                  className="text-primary-500 block"
                 >
-                  <span>📞</span>
-                  <span className="text-sm md:text-base">
-                    BOOK FREE CONSULTATION
-                  </span>
-                </button>
-              </div>
+                  Global
+                </span>
+                <span
+                  ref={addToRefs(textElementsRef, 3)}
+                  className="text-primary-500 block"
+                >
+                  Education{" "}
+                </span>
+                <span
+                  ref={addToRefs(textElementsRef, 4)}
+                  className="text-secondary-500 block"
+                >
+                  Excellence
+                </span>
+              </h1>
 
-              {/* Success Stats */}
-              <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-[#B2ACCE]/30">
-                {statsData.map((stat, index) => (
-                  <div
-                    key={`stat-${index}`}
-                    ref={addToRefs(textElementsRef, 6 + index)}
-                    className="text-center"
-                  >
-                    <div className="text-xl md:text-2xl font-bold text-[#C73D43]">
-                      {stat.value}
-                    </div>
-                    <div className="text-xs md:text-sm text-[#2C3C81]/70">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <p
+                ref={addToRefs(textElementsRef, 5)}
+                className="text-secondary-600 text-base md:text-lg max-w-lg leading-relaxed"
+              >
+                At Nextgen Advisors, we empower the next generation by providing 
+                access to quality education and global career opportunities that 
+                truly make a difference in their lives.
+              </p>
             </div>
 
-            {/* Right Content - Hero Image with Floating Elements */}
-            <div className="relative mt-8 lg:mt-0">
-              <div
-                ref={imageContainerRef}
-                className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden flex items-center justify-center"
+            <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/apply-online"
+                className="group flex items-center justify-center space-x-2 bg-primary-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-secondary-500 hover:shadow-lg transition-all duration-300 shadow-md"
+                aria-label="Apply online now"
               >
-                {/* Hero Image */}
-                <Image
-                  src="/girl.png"
-                  alt="Students studying abroad - Gurukul Education Foundation"
-                  fill
-                  className="object-contain"
-                  priority
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
+                <span>APPLY ONLINE NOW</span>
+                <ArrowRight className="w-4 md:w-5 h-4 md:h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
 
-                {/* Enhanced Floating Cards */}
-                {floatingCardsData.map((card, index) => (
-                  <div
-                    key={`card-${index}`}
-                    ref={addToFloatingRefs(index)}
-                    className={`absolute ${card.position} ${card.bg} ${card.text} px-4 py-3 rounded-xl shadow-lg transition-all duration-300 cursor-pointer z-10 hover:z-20 hover:scale-110 hover:-translate-y-1 hover:shadow-xl`}
-                    aria-label={`${card.title}: ${card.value}`}
-                  >
-                    <div className="text-xs opacity-80">{card.title}</div>
-                    <div className="font-bold text-sm">{card.value}</div>
+              <Link
+                href="/contact"
+                className="group flex items-center justify-center space-x-2 bg-transparent border-2 border-secondary-500 text-secondary-500 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold hover:bg-secondary-500 hover:text-white hover:shadow-lg transition-all duration-300"
+                aria-label="Get free consultation"
+              >
+                <span>📞</span>
+                <span className="text-sm md:text-base">
+                  FREE CONSULTATION
+                </span>
+              </Link>
+            </div>
+
+            {/* Success Stats */}
+            <div className="grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-supporting-300">
+              {statsData.map((stat, index) => (
+                <div
+                  key={`stat-${index}`}
+                  ref={addToRefs(textElementsRef, 6 + index)}
+                  className="text-center"
+                >
+                  <div className="flex items-center justify-center mb-2">
+                    <div className="text-primary-500 mr-2">{stat.icon}</div>
+                    <div className="text-xl md:text-2xl font-bold text-primary-500">
+                      {stat.value}
+                    </div>
                   </div>
-                ))}
+                  <div className="text-xs md:text-sm text-secondary-600">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Content - Hero Image with Floating Elements */}
+          <div className="relative mt-8 lg:mt-0">
+            <div
+              ref={imageContainerRef}
+              className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] rounded-3xl overflow-hidden flex items-center justify-center bg-gradient-to-br from-primary-100 to-secondary-100"
+            >
+              {/* Hero Image */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <div className="w-80 h-80 md:w-96 md:h-96 lg:w-[450px] lg:h-[450px] rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-2xl">
+                  <Globe className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 text-white" />
+                </div>
               </div>
+
+              {/* Enhanced Floating Cards */}
+              {floatingCardsData.map((card, index) => (
+                <div
+                  key={`card-${index}`}
+                  ref={addToFloatingRefs(index)}
+                  className={`absolute ${card.position} ${card.bg} ${card.text} px-4 py-3 rounded-xl shadow-lg transition-all duration-300 cursor-pointer z-10 hover:z-20 hover:scale-110 hover:-translate-y-1 hover:shadow-xl`}
+                  aria-label={`${card.title}: ${card.value}`}
+                >
+                  <div className="flex items-center gap-2 mb-1">
+                    {card.icon}
+                    <div className="text-xs opacity-80">{card.title}</div>
+                  </div>
+                  <div className="font-bold text-sm">{card.value}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      {showConsultationModal && <ConsultationModal />}
-      {showJourneyModal && <JourneyModal />}
-    </>
+    </div>
   );
 }
